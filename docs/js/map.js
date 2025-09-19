@@ -112,6 +112,7 @@ const filterOptions = document.getElementById('filter-options');
 const allTypes = Object.keys(iconMap);
 let selectedType = null; // null 代表全部
 let markers = [];
+let openPopupData = null; // 記錄當前打開的 popup 資訊
 
 function renderFilterBar() {
     filterOptions.innerHTML = '';
@@ -220,6 +221,17 @@ fetch('data/taiwan_locations.csv')
         }
         // 只顯示地圖目前視窗範圍內的點位
         function updateMarkers() {
+            // 檢查是否有打開的 popup
+            const currentPopup = map._popup;
+            if (currentPopup && currentPopup.isOpen()) {
+                const popupLatLng = currentPopup.getLatLng();
+                openPopupData = {
+                    lat: popupLatLng.lat,
+                    lng: popupLatLng.lng,
+                    content: currentPopup.getContent()
+                };
+            }
+
             // 移除舊的 marker
             markers.forEach(m => map.removeLayer(m));
             markers = [];
@@ -243,6 +255,15 @@ fetch('data/taiwan_locations.csv')
                     const marker = L.marker([loc.lat, loc.lng], { icon })
                         .addTo(map)
                         .bindPopup(popupHtml);
+
+                    // 如果這個 marker 之前有打開的 popup，重新打開它
+                    if (openPopupData &&
+                        Math.abs(openPopupData.lat - loc.lat) < 0.0001 &&
+                        Math.abs(openPopupData.lng - loc.lng) < 0.0001) {
+                        marker.openPopup();
+                        openPopupData = null; // 清除記錄
+                    }
+
                     markers.push(marker);
                 }
             });
