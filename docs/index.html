@@ -1,14 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>運動地圖</title>
+    <title>運動地圖 - 找到您附近的運動設施</title>
+    <meta name="description" content="運動地圖，提供全台運動設施位置查詢，包括籃球場、羽球場、游泳池、健身房等各種運動場地資訊。">
+    <meta name="keywords" content="運動場地,運動地圖,台灣運動,籃球場,羽球場,游泳池,健身房,運動設施">
+    <meta name="author" content="Taiwan Sports Map">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="運動地圖">
+    <meta property="og:description" content="找到您附近的運動設施，包括各種運動場地的詳細資訊">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://caseyblaze.github.io/sport-map/">
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2372630253098347"
-        crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -43,7 +51,29 @@
             </div>
         </div>
     </div>
-    <div id="map" style="height: 100vh;"></div>
+
+    <!-- 網站資訊區塊 -->
+    <div
+        style="position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);z-index:1000;padding:10px;border-top:1px solid #ddd;">
+        <div
+            style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;font-size:14px;">
+            <div style="margin-bottom:5px;">
+                <strong>運動地圖</strong> - 幫助您找到附近的運動設施 |
+                <a href="about.html" style="color:#1976d2;text-decoration:none;">關於我們</a>
+            </div>
+            <!-- 贊助支持 -->
+            <div style="margin-bottom:5px;">
+                <span style="font-size:12px;color:#666;">
+                    喜歡這個服務嗎？
+                    <a href="#" style="color:#1976d2;text-decoration:none;" onclick="alert('感謝您的支持！您可以通過分享給朋友來幫助我們！')">
+                        ❤️ 支持我們
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="map" style="height: calc(100vh - 60px);"></div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="js/map.js"></script>
 </body>
