@@ -139,6 +139,58 @@ function renderFilterBar() {
 }
 renderFilterBar();
 
+// 地區搜尋功能
+const locationSearch = document.getElementById('location-search');
+const searchBtn = document.getElementById('search-btn');
+
+function searchLocation() {
+    const query = locationSearch.value.trim();
+    if (!query) return;
+
+    // 使用 Nominatim API 搜尋地址
+    const searchUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' 台灣')}&limit=1`;
+
+    fetch(searchUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                const result = data[0];
+                const lat = parseFloat(result.lat);
+                const lng = parseFloat(result.lon);
+
+                // 移動地圖到搜尋結果
+                map.setView([lat, lng], 14);
+
+                // 可選：在搜尋位置放一個臨時 marker
+                const searchMarker = L.marker([lat, lng])
+                    .addTo(map)
+                    .bindPopup(`搜尋結果: ${result.display_name}`)
+                    .openPopup();
+
+                // 5秒後移除搜尋 marker
+                setTimeout(() => {
+                    map.removeLayer(searchMarker);
+                }, 5000);
+            } else {
+                alert('找不到該地區，請嘗試其他關鍵字');
+            }
+        })
+        .catch(error => {
+            console.error('搜尋錯誤:', error);
+            alert('搜尋失敗，請稍後再試');
+        });
+}
+
+// 綁定搜尋按鈕點擊事件
+searchBtn.addEventListener('click', searchLocation);
+
+// 綁定 Enter 鍵搜尋
+locationSearch.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        searchLocation();
+    }
+});
+
 // 載入並解析 CSV，僅顯示地圖附近的點位
 fetch('data/taiwan_locations.csv')
     .then(response => response.text())
