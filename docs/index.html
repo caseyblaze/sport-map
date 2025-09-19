@@ -24,19 +24,23 @@
         </svg>
     </button>
     <div id="filter-bar"
-        style="position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:1001;background:rgba(255,255,255,0.95);border-radius:8px;padding:12px 18px;box-shadow:0 2px 8px rgba(0,0,0,0.12);font-size:15px;max-width:90vw;display:flex;align-items:center;gap:15px;">
-        <div>
+        style="position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:1001;background:rgba(255,255,255,0.95);border-radius:8px;padding:12px 18px;box-shadow:0 2px 8px rgba(0,0,0,0.12);font-size:15px;max-width:90vw;min-width:300px;">
+        <!-- 場地類型篩選區域 -->
+        <div style="margin-bottom:12px;">
             <b>場地類型篩選：</b>
             <span id="filter-options"></span>
         </div>
-        <div>
-            <b>地區搜尋：</b>
-            <input id="location-search" type="text" placeholder="輸入地區名稱..."
-                style="padding:4px 8px;border:1px solid #ddd;border-radius:4px;font-size:14px;width:150px;">
-            <button id="search-btn"
-                style="padding:4px 8px;margin-left:5px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:14px;">
-                搜尋
-            </button>
+        <!-- 地區搜尋區域 -->
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;">
+            <b style="white-space:nowrap;">地區搜尋：</b>
+            <div style="display:flex;flex-grow:1;min-width:200px;gap:5px;">
+                <input id="location-search" type="text" placeholder="輸入地區名稱..."
+                    style="padding:4px 8px;border:1px solid #ddd;border-radius:4px;font-size:14px;flex-grow:1;min-width:120px;">
+                <button id="search-btn"
+                    style="padding:4px 12px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:14px;white-space:nowrap;">
+                    搜尋
+                </button>
+            </div>
         </div>
     </div>
     <div id="map" style="height: 100vh;"></div>
