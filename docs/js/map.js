@@ -52,12 +52,12 @@ markerConfig.forEach(config => {
 // Note: This requires additional setup, such as using a library like "lazysizes" or implementing custom logic to load icons only when needed.
 // For now, ensure icons are optimized and served from a CDN or compressed format.
 
-// 定位 marker
+// Define a new icon for the user's location
 const userLocationIcon = L.icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34]
+    iconUrl: 'images/location-pin.svg', // Update this path to the actual location pin icon
+    iconSize: [30, 50],
+    iconAnchor: [15, 50],
+    popupAnchor: [0, -40]
 });
 
 // 地點 marker 用 Leaflet 預設藍色圖標
