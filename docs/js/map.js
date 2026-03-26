@@ -7,111 +7,81 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
     attribution: '© OpenStreetMap, © CartoDB'
 }).addTo(map);
 
-// 地點 marker 用 Leaflet 預設藍色圖標
-const defaultIcon = L.icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    shadowSize: [41, 41]
+const MIN_MARKER_ZOOM = 13;
+
+// Define a reusable function to create icons without shadows
+function createIcon(iconUrl) {
+    return L.icon({
+        iconUrl: iconUrl,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34]
+    });
+}
+
+// Configuration array for marker types and their corresponding icons
+const markerConfig = [
+    { type: '羽球場', icon: 'images/badminton.svg' },
+    { type: '籃球場', icon: 'images/basketball.svg' },
+    { type: '排球場', icon: 'images/volleyball.svg' },
+    { type: '游泳池', icon: 'images/swimming.svg' },
+    { type: '足球場', icon: 'images/soccer.svg' },
+    { type: '田徑/跑道', icon: 'images/track.svg' },
+    { type: '活動中心/多功能空間', icon: 'images/activity_center.svg' },
+    { type: '高爾夫球場', icon: 'images/golf.svg' },
+    { type: '綜合/多功能場館', icon: 'images/activity_center.svg' },
+    { type: '桌球場', icon: 'images/table_tennis.svg' },
+    { type: '健身房', icon: 'images/gym.svg' },
+    { type: '網球場', icon: 'images/tennis.svg' },
+    { type: '體操室', icon: 'images/park.svg' },
+    { type: '滾球/槌球場', icon: 'images/croquet.svg' },
+    { type: '棒壘球場', icon: 'images/baseball.svg' },
+    { type: '舞蹈教室', icon: 'images/park.svg' },
+    { type: '滑輪場', icon: 'images/roller.svg' },
+    { type: '橄欖球場', icon: 'images/rugby.svg' },
+    { type: '運動公園', icon: 'images/park.svg' }
+];
+
+// Dynamically generate the iconMap object
+const iconMap = {};
+markerConfig.forEach(config => {
+    iconMap[config.type] = createIcon(config.icon);
 });
+
+// Lazy-load marker icons (if applicable)
+// Note: This requires additional setup, such as using a library like "lazysizes" or implementing custom logic to load icons only when needed.
+// For now, ensure icons are optimized and served from a CDN or compressed format.
 
 // 定位 marker
 const userLocationIcon = L.icon({
     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    shadowSize: [41, 41]
+    popupAnchor: [1, -34]
 });
 
-// 定義不同類型的 marker 圖標
-const iconMap = {
-    '羽球場': L.icon({
-        iconUrl: 'images/sports_badminton.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '籃球場': L.icon({
-        iconUrl: 'images/sports_basketball.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '排球場': L.icon({
-        iconUrl: 'images/sports_volleyball.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '游泳池': L.icon({
-        iconUrl: 'images/sports_swimming.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '足球場': L.icon({
-        iconUrl: 'images/sports_soccer.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '田徑/跑道': L.icon({
-        iconUrl: 'images/sports_track.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '活動中心/多功能空間': L.icon({
-        iconUrl: 'images/sports_activity_center.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '高爾夫球場': L.icon({
-        iconUrl: 'images/sports_golf.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '綜合/多功能場館': L.icon({
-        iconUrl: 'images/sports_multi_sport.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '桌球場': L.icon({
-        iconUrl: 'images/sports_table_tennis.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '健身房': L.icon({
-        iconUrl: 'images/sports_gym.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '網球場': L.icon({
-        iconUrl: 'images/sports_tennis.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '體操室': L.icon({
-        iconUrl: 'images/sports_gymnastics.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '滾球/槌球場': L.icon({
-        iconUrl: 'images/sports_croquet.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '棒壘球場': L.icon({
-        iconUrl: 'images/sports_baseball.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '舞蹈教室': L.icon({
-        iconUrl: 'images/sports_dance.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '滑輪場': L.icon({
-        iconUrl: 'images/sports_roller.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '橄欖球場': L.icon({
-        iconUrl: 'images/sports_rugby.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    }),
-    '運動公園': L.icon({
-        iconUrl: 'images/sports_park.svg',
-        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
-    })
-};
+// 地點 marker 用 Leaflet 預設藍色圖標
+const defaultIcon = L.icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34]
+});
 
 // 圖標篩選器功能（下拉選單，只顯示一個框）
 const filterOptions = document.getElementById('filter-options');
 const allTypes = Object.keys(iconMap);
 let selectedType = null; // null 代表全部
-let markers = [];
+const clusterGroup = L.markerClusterGroup({
+    showCoverageOnHover: false,
+    removeOutsideVisibleBounds: true,
+    chunkedLoading: true,
+    chunkDelay: 25,
+    chunkInterval: 200
+});
+clusterGroup.addTo(map);
+
+let markerEntries = [];
 let openPopupData = null; // 記錄當前打開的 popup 資訊
 
 function renderFilterBar() {
@@ -219,8 +189,32 @@ fetch('data/taiwan_locations.csv')
                 });
             }
         }
+        markerEntries = allLocations.map(loc => {
+            const gmapUrl = `https://www.google.com/maps/search/?api=1&query=${loc.lat},${loc.lng}`;
+            const popupHtml = `
+                <b>${loc.name}</b><br>
+                <b>場地類型：</b>${loc.category || ''}<br>
+                <b>地址：</b>${loc.address || ''}<br>
+                <b>電話：</b>${loc.phone || ''}<br>
+                <b>開放時間：</b>${loc.opening_hours || ''}<br>
+                <b>場地租借：</b>${loc.rental_info || ''}<br>
+                <b>簡介：</b>${loc.description || ''}<br>
+                <a href='${gmapUrl}' target='_blank' rel='noopener noreferrer'>在 Google 地圖開啟</a>
+            `;
+            const icon = iconMap[loc.category] || defaultIcon;
+            const marker = L.marker([loc.lat, loc.lng], { icon }).bindPopup(popupHtml);
+            return { loc, marker };
+        });
+
         // 只顯示地圖目前視窗範圍內的點位
         function updateMarkers() {
+            const zoom = map.getZoom();
+            if (zoom < MIN_MARKER_ZOOM) {
+                clusterGroup.clearLayers();
+                openPopupData = null;
+                return;
+            }
+
             // 檢查是否有打開的 popup
             const currentPopup = map._popup;
             if (currentPopup && currentPopup.isOpen()) {
@@ -232,48 +226,54 @@ fetch('data/taiwan_locations.csv')
                 };
             }
 
-            // 移除舊的 marker
-            markers.forEach(m => map.removeLayer(m));
-            markers = [];
             const bounds = map.getBounds();
-            allLocations.forEach(loc => {
+            const nextMarkers = [];
+            let reopenMarker = null;
+
+            markerEntries.forEach(entry => {
+                const loc = entry.loc;
                 const typeMatch = selectedType === null || loc.category === selectedType;
                 if (bounds.contains([loc.lat, loc.lng]) && typeMatch) {
-                    const gmapUrl = `https://www.google.com/maps/search/?api=1&query=${loc.lat},${loc.lng}`;
-                    const popupHtml = `
-                        <b>${loc.name}</b><br>
-                        <b>場地類型：</b>${loc.category || ''}<br>
-                        <b>地址：</b>${loc.address || ''}<br>
-                        <b>電話：</b>${loc.phone || ''}<br>
-                        <b>開放時間：</b>${loc.opening_hours || ''}<br>
-                        <b>場地租借：</b>${loc.rental_info || ''}<br>
-                        <b>簡介：</b>${loc.description || ''}<br>
-                        <a href='${gmapUrl}' target='_blank'>在 Google 地圖開啟</a>
-                    `;
-                    // 根據類型選擇 icon，沒有就用預設
-                    const icon = iconMap[loc.category] || defaultIcon;
-                    const marker = L.marker([loc.lat, loc.lng], { icon })
-                        .addTo(map)
-                        .bindPopup(popupHtml);
+                    nextMarkers.push(entry.marker);
 
-                    // 如果這個 marker 之前有打開的 popup，重新打開它
                     if (openPopupData &&
                         Math.abs(openPopupData.lat - loc.lat) < 0.0001 &&
                         Math.abs(openPopupData.lng - loc.lng) < 0.0001) {
-                        marker.openPopup();
-                        openPopupData = null; // 清除記錄
+                        reopenMarker = entry.marker;
                     }
-
-                    markers.push(marker);
                 }
             });
+
+            clusterGroup.clearLayers();
+            if (nextMarkers.length > 0) {
+                clusterGroup.addLayers(nextMarkers);
+            }
+
+            if (reopenMarker) {
+                clusterGroup.zoomToShowLayer(reopenMarker, () => {
+                    reopenMarker.openPopup();
+                });
+                openPopupData = null;
+            }
         }
         // 初次載入
         updateMarkers();
         // 當地圖移動或縮放時，重新載入附近點位
-        map.on('moveend', updateMarkers);
-        // 讓篩選器切換時也能更新
-        window.updateMarkers = updateMarkers;
+        // Debounce function to limit the frequency of updateMarkers calls
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        // Wrap updateMarkers with debounce to improve performance
+        const debouncedUpdateMarkers = debounce(updateMarkers, 200);
+
+        // Replace event listeners with debounced version
+        map.on('moveend', debouncedUpdateMarkers);
+        window.updateMarkers = debouncedUpdateMarkers;
     })
     .catch(error => console.error('Error loading the CSV file:', error));
 

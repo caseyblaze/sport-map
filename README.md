@@ -1,55 +1,49 @@
 # Sport Map Project
 
-This project is a web application that utilizes Leaflet.js and OpenStreetMap to create an interactive map displaying locations sourced from an Excel file.
+DEMO: https://caseyblaze.github.io/sport-map/
 
-## Project Structure
+This is an interactive map site built with Leaflet.js and OpenStreetMap. Data comes from a CSV file.
+
+## Structure
 
 ```
 sport-map
-├── public
-│   ├── index.html          # Main HTML document
+├── docs
+│   ├── index.html       
 │   ├── css
-│   │   └── style.css      # CSS styles for the project
+│   │   └── style.css     
 │   ├── js
-│   │   └── map.js         # JavaScript for initializing the map and processing data
+│   │   └── map.js    
 │   └── data
-│       └── locations.xls   # Excel file containing location data
-├── README.md               # Documentation for the project
-└── package.json            # npm configuration file
+├── README.md           
+└── package.json  
 ```
 
-## Setup Instructions
+## Local Development
 
-1. **Clone the Repository**: 
-   Clone this repository to your local machine using:
+This is a static site and does not require a build step. Use a local static server to avoid CORS issues when loading the CSV.
+
+1. **Clone the repository**
    ```
    git clone <repository-url>
    ```
 
-2. **Navigate to the Project Directory**:
+2. **Enter the project directory**
    ```
    cd sport-map
    ```
 
-3. **Install Dependencies**:
-   Use npm to install the required libraries:
+3. **Start a local server**
    ```
-   npm install xlsx leaflet
+   # Node (requires npx)
+   npx serve docs
    ```
 
-4. **Open the Project**:
-   Open `public/index.html` in your web browser to view the map.
+4. **Open the site**
+   - npx serve: use the URL printed in the terminal
 
-## Usage
 
-- The application reads location data from `public/data/locations.xls`.
-- Markers are displayed on the map based on the data extracted from the Excel file.
-- Customize the appearance of the map and other elements using `public/css/style.css`.
+## Notes
 
-## Deployment
-
-Once you have tested the application and everything is functioning correctly, you can push the project to a Git repository and share the URL for exposure via LINE OA.
-
-## Additional Information
-
-For any issues or contributions, please refer to the project's GitHub page or contact the project maintainer.
+- Static assets and map icons live in [docs](docs).
+- Map data is in [docs/data/taiwan_locations.csv](docs/data/taiwan_locations.csv).

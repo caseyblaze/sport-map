@@ -12,15 +12,4 @@
             <image:caption>運動地圖 - 找到您附近的運動設施</image:caption>
         </image:image>
     </url>
-    <url>
-        <loc>https://caseyblaze.github.io/sport-map/about.html</loc>
-        <lastmod>2024-09-20</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-        <image:image>
-            <image:loc>https://caseyblaze.github.io/sport-map/images/sportmap-logo.png</image:loc>
-            <image:title>運動地圖 Logo</image:title>
-            <image:caption>關於運動地圖</image:caption>
-        </image:image>
-    </url>
 </urlset>
